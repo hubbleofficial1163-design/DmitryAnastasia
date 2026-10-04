@@ -18,14 +18,13 @@
     }
 
     /* ===== HERO ===== */
-    .hero {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      height: 100svh;
-      height: 100dvh;
-      overflow: hidden;
-    }
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;    /* фолбэк для старых браузеров */
+  height: 100svh;   /* стабильная высота — шторка не влияет */
+  overflow: hidden;
+}
     .hero__img {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
@@ -35,7 +34,8 @@
 
     /* ===== Кнопка музыки ===== */
     .music {
-      width: 100%; padding: 40px 0;
+        width: 100%;
+  padding: 80px 0 40px;   /* сверху больше, снизу как было */
       display: flex; justify-content: center; align-items: center;
       background: #ffffff;
     }
@@ -348,6 +348,14 @@
       -webkit-tap-highlight-color: transparent;
       transition: opacity 0.2s ease, transform 0.1s ease;
     }
+
+
+    .dresscode__img--small {
+  width: 90%;          /* вместо 100% */
+  max-width: 340px;    /* ограничение сверху */
+  margin: 0 auto;      /* центрирование */
+  height: auto;
+}
     .txt__chat:active { opacity: 0.85; transform: scale(0.99); }
   </style>
 </head>
@@ -397,9 +405,7 @@
   <!-- Секция: дресс-код -->
   <section class="dresscode">
     <img class="dresscode__img" src="z3.png"    alt="Заголовок дресс-кода" loading="lazy" decoding="async">
-    <img class="dresscode__img" src="11.png"    alt=""                     loading="lazy" decoding="async">
-    <img class="dresscode__img" src="22.png"    alt=""                     loading="lazy" decoding="async">
-    <img class="dresscode__img" src="33.png"    alt=""                     loading="lazy" decoding="async">
+  <img class="dresscode__img dresscode__img--small" src="timing.png" alt="" loading="lazy" decoding="async">
     <img class="dresscode__img" src="zakl.webp" alt="Заключение"           loading="lazy" decoding="async">
   </section>
 
@@ -569,11 +575,13 @@
 
   <!-- Секция: футер -->
   <footer class="footer">
-    <img class="footer__img" src="footer.webp" alt="" loading="lazy" decoding="async">
+    
 
     <div class="footer__frame">
       <img class="footer__photo" src="para.jpg" alt="" loading="lazy" decoding="async">
     </div>
+
+    <img class="footer__img" src="footer.webp" alt="" loading="lazy" decoding="async">
   </footer>
 
   <!-- Музыка -->

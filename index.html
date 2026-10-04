@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Свадебное приглашение</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+      background: #ffffff;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      height: 100svh;
+      height: 100dvh;
+      overflow: hidden;
+    }
+    .hero__img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      display: block; user-select: none; -webkit-user-drag: none;
+    }
+
+    /* ===== Кнопка музыки ===== */
+    .music {
+      width: 100%; padding: 40px 0;
+      display: flex; justify-content: center; align-items: center;
+      background: #ffffff;
+    }
+    .music__btn {
+      position: relative; width: 120px; height: 120px;
+      background: transparent; border: none; padding: 0;
+      cursor: pointer; display: flex; justify-content: center; align-items: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .music__btn::before {
+      content: ""; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 68%; height: 68%;
+      background: #d8d0c8; border-radius: 50%; z-index: 1;
+    }
+    .music__icon {
+      position: relative; z-index: 2;
+      width: 0; height: 0;
+      border-style: solid;
+      border-width: 11px 0 11px 18px;
+      border-color: transparent transparent transparent #ffffff;
+      margin-left: 4px;
+    }
+    .music__text {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      z-index: 3; animation: music-rotate 12s linear infinite;
+      pointer-events: none;
+    }
+    .music__text svg { width: 100%; height: 100%; display: block; }
+    .music__text text {
+      fill: #3a3a3a;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 8px; font-weight: 500; letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    @keyframes music-rotate {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .music__btn.is-playing .music__icon {
+      width: 14px; height: 18px; border: none; margin-left: 0;
+      background:
+        linear-gradient(#ffffff, #ffffff) left  center / 5px 100% no-repeat,
+        linear-gradient(#ffffff, #ffffff) right center / 5px 100% no-repeat;
+    }
+
+    /* ===== Общие стили фото-секций ===== */
+    .story, .location, .dresscode, .details, .text {
+      width: 100%; background: #ffffff;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .story__img, .location__img, .dresscode__img, .details__img, .text__img {
+      display: block; width: 100%; height: auto;
+      user-select: none; -webkit-user-drag: none;
+    }
+    .location__link {
+      display: block; width: 100%; line-height: 0;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+      transition: opacity 0.2s ease;
+    }
+    .location__link:active { opacity: 0.85; }
+
+    /* ===== RSVP ===== */
+    .rsvp {
+      width: 100%; position: relative;
+      display: flex; flex-direction: column; align-items: center;
+      font-family: "PT Serif", "Times New Roman", Georgia, serif;
+      color: #3a3a3a;
+    }
+    .rsvp__bg {
+      display: block; width: 100%; height: auto;
+      user-select: none; -webkit-user-drag: none;
+    }
+    .rsvp__form {
+      position: relative; z-index: 2;
+      width: 100%; padding: 0 24px 40px;
+      margin-top: -8px;
+      background: #d9d2cb;
+      display: flex; flex-direction: column; gap: 22px;
+    }
+    .rsvp__label { font-size: 17px; line-height: 1.4; color: #3a3a3a; }
+    .rsvp__input {
+      width: 100%; padding: 16px 18px;
+      font-family: inherit; font-size: 15px; color: #3a3a3a;
+      background: #ffffff; border: none; border-radius: 16px;
+      outline: none; -webkit-appearance: none; appearance: none;
+    }
+    .rsvp__input::placeholder { color: #b8b0a8; }
+    .rsvp__group { display: flex; flex-direction: column; gap: 14px; }
+    .rsvp__radio {
+      display: flex; align-items: center; gap: 12px;
+      cursor: pointer; font-size: 16px; line-height: 1.3;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .rsvp__radio input {
+      position: absolute; opacity: 0; pointer-events: none;
+    }
+    .rsvp__radio-mark {
+      flex: 0 0 auto; width: 20px; height: 20px;
+      border-radius: 50%; border: 1.5px solid #8a817a;
+      background: transparent;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .rsvp__radio-mark::after {
+      content: ""; width: 10px; height: 10px;
+      border-radius: 50%; background: #3a3a3a;
+      transform: scale(0); transition: transform 0.15s ease;
+    }
+    .rsvp__radio input:checked + .rsvp__radio-mark { border-color: #3a3a3a; }
+    .rsvp__radio input:checked + .rsvp__radio-mark::after { transform: scale(1); }
+    .rsvp__submit {
+      width: 100%; margin-top: 6px;
+      padding: 18px 20px;
+      font-family: inherit; font-size: 15px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: #3a3a3a; background: #ffffff;
+      border: none; border-radius: 999px;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+      transition: opacity 0.2s ease, transform 0.1s ease;
+    }
+    .rsvp__submit:active { opacity: 0.85; transform: scale(0.99); }
+    .rsvp__end {
+      display: block; width: 100%; height: auto;
+      user-select: none; -webkit-user-drag: none;
+    }
+
+    /* ===== Секция с таймером ===== */
+    .timer {
+      width: 100%; background: #ffffff;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .timer__img {
+      display: block; width: 100%; height: auto;
+      user-select: none; -webkit-user-drag: none;
+    }
+    .timer__wrap {
+      width: 100%; background: #d9d2cb;
+      padding: 20px 16px 24px;
+      display: flex; justify-content: center; align-items: flex-start;
+      font-family: "PT Serif", "Times New Roman", Georgia, serif;
+      color: #3a3a3a;
+    }
+    .timer__inner {
+      display: flex; align-items: flex-start; justify-content: center;
+      gap: 3px; width: 100%; max-width: 320px;
+    }
+    .timer__unit {
+      display: flex; flex-direction: column; align-items: center;
+      flex: 1 1 0; min-width: 0;
+    }
+    .timer__num {
+      font-size: clamp(24px, 7vw, 34px);
+      line-height: 1; font-weight: 400;
+      letter-spacing: 0.02em;
+      font-variant-numeric: tabular-nums;
+      color: #3a3a3a;
+    }
+    .timer__label {
+      margin-top: 6px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: clamp(9px, 2.6vw, 11px);
+      color: #7d746c; letter-spacing: 0.02em; white-space: nowrap;
+    }
+    .timer__sep {
+      font-size: clamp(20px, 6vw, 28px);
+      line-height: 1; color: #3a3a3a;
+      padding-top: 2px;
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
+    }
+    .timer__sep::before,
+    .timer__sep::after {
+      content: ""; width: 3px; height: 3px;
+      border-radius: 50%; background: #3a3a3a; display: block;
+    }
+
+    /* ===== Футер ===== */
+    .footer {
+      width: 100%; background: #ffffff;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .footer__img {
+      display: block; width: 100%; height: auto;
+      user-select: none; -webkit-user-drag: none;
+    }
+
+    /* Фото para.jpg в рамке */
+    .footer__frame {
+      width: 100%;
+      padding: 0 24px 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #d9d2cb;
+      padding: 32px 24px 40px;   /* 32px — отступ сверху */
+    }
+    .footer__photo {
+      display: block;
+      width: 100%;
+      max-width: 340px;
+      height: auto;
+      border-radius: 18px;              /* скругление как у карточек */
+      border: 1px solid #d9d2cb;        /* тонкая рамка в тон палитры */
+      box-shadow: 0 6px 24px rgba(58, 58, 58, 0.12); /* лёгкая тень */
+      background: #d9d2cb;
+      object-fit: cover;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .rsvp__check {
+  display: flex; align-items: center; gap: 12px;
+  cursor: pointer; font-size: 16px; line-height: 1.3;
+  -webkit-tap-highlight-color: transparent;
+}
+.rsvp__check input {
+  position: absolute; opacity: 0; pointer-events: none;
+}
+.rsvp__check-mark {
+  flex: 0 0 auto; width: 20px; height: 20px;
+  border-radius: 6px; border: 1.5px solid #8a817a;
+  background: transparent;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.rsvp__check-mark::after {
+  content: "";
+  width: 10px; height: 6px;
+  border-left: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  transform: rotate(-45deg) scale(0);
+  transition: transform 0.15s ease;
+  margin-top: -2px;
+}
+.rsvp__check input:checked + .rsvp__check-mark {
+  border-color: #3a3a3a;
+  background: #3a3a3a;
+}
+.rsvp__check input:checked + .rsvp__check-mark::after {
+  transform: rotate(-45deg) scale(1);
+}
+.rsvp__hint {
+  font-size: 13px;
+  color: #7d746c;
+  line-height: 1.35;
+  margin-top: -6px;
+}
+
+.rsvp__deadline {
+  position: relative; z-index: 2;
+  width: 100%;
+  padding: 24px 24px 24px;
+  background: #d9d2cb;
+  text-align: center;
+  font-size: 17px;
+  line-height: 1.4;
+  color: #3a3a3a;
+}
+
+    /* ===== Секция txt (текстовые блоки) ===== */
+    .txt {
+      width: 100%;
+      background: #ffffff;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 36px 28px 44px;
+      font-family: "PT Serif", "Times New Roman", Georgia, serif;
+      color: #3a3a3a;
+      text-align: center;
+    }
+    .txt__title {
+      font-size: 22px;
+      line-height: 1.35;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      margin-bottom: 24px;
+    }
+    .txt__text {
+      font-size: 17px;
+      line-height: 1.55;
+      font-weight: 400;
+      max-width: 420px;
+      margin-bottom: 22px;
+    }
+    .txt__text:last-of-type { margin-bottom: 0; }
+    .txt__note {
+      font-size: 17px;
+      line-height: 1.55;
+      color: #3a3a3a;
+      font-style: inherit;
+      max-width: 420px;
+      margin-top: 8px;
+    }
+    .txt__divider {
+      width: 40px; height: 1px;
+      background: #b8b0a8;
+      margin: 26px 0;
+    }
+    .txt__chat {
+      display: inline-block;
+      margin-top: 28px;
+      padding: 16px 34px;
+      font-family: inherit;
+      font-size: 15px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #3a3a3a;
+      background: #d9d2cb;
+      border-radius: 999px;
+      -webkit-tap-highlight-color: transparent;
+      transition: opacity 0.2s ease, transform 0.1s ease;
+    }
+    .txt__chat:active { opacity: 0.85; transform: scale(0.99); }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <img class="hero__img" src="hero.png" alt="" fetchpriority="high" decoding="async">
+  </section>
+
+  <!-- Кнопка музыки -->
+  <section class="music">
+    <button class="music__btn" id="musicBtn" aria-label="Включить музыку">
+      <span class="music__icon"></span>
+      <span class="music__text">
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <defs>
+            <path id="circlePath" d="M 60,60 m -50,0 a 50,50 0 1,1 100,0 a 50,50 0 1,1 -100,0" />
+          </defs>
+          <text>
+            <textPath href="#circlePath" startOffset="0">
+              ВКЛЮЧИТЕ МУЗЫКУ · ВКЛЮЧИТЕ МУЗЫКУ · ПОЖАЛУЙСТА ·
+            </textPath>
+          </text>
+        </svg>
+      </span>
+    </button>
+  </section>
+
+  <!-- Секция: заголовок → 1 → 2 → календарь -->
+  <section class="story">
+    <img class="story__img" src="z1.png"  alt="Заголовок"  loading="lazy" decoding="async">
+    <img class="story__img" src="1.png"   alt=""           loading="lazy" decoding="async">
+    <img class="story__img" src="2.png"   alt=""           loading="lazy" decoding="async">
+    <img class="story__img" src="cal.png" alt="Календарь"  loading="lazy" decoding="async">
+  </section>
+
+  <!-- Секция: локация -->
+  <section class="location">
+    <img class="location__img" src="z2.png" alt="Заголовок локации" loading="lazy" decoding="async">
+    <a class="location__link" href="https://yandex.ru/maps/-/CXeMjNKD"
+       target="_blank" rel="noopener noreferrer" aria-label="Открыть карту в Яндекс.Картах">
+      <img class="location__img" src="loc2.png" alt="Локация" loading="lazy" decoding="async">
+    </a>
+  </section>
+
+  <!-- Секция: дресс-код -->
+  <section class="dresscode">
+    <img class="dresscode__img" src="z3.png"    alt="Заголовок дресс-кода" loading="lazy" decoding="async">
+    <img class="dresscode__img" src="11.png"    alt=""                     loading="lazy" decoding="async">
+    <img class="dresscode__img" src="22.png"    alt=""                     loading="lazy" decoding="async">
+    <img class="dresscode__img" src="33.png"    alt=""                     loading="lazy" decoding="async">
+    <img class="dresscode__img" src="zakl.webp" alt="Заключение"           loading="lazy" decoding="async">
+  </section>
+
+  <!-- Секция: детали -->
+  <section class="details">
+    <img class="details__img" src="z4.png"     alt="Заголовок" loading="lazy" decoding="async">
+    <img class="details__img" src="dress.png"  alt=""         loading="lazy" decoding="async">
+    <img class="details__img" src="dress2.jpg" alt=""         loading="lazy" decoding="async">
+    <img class="details__img" src="dress3.png" alt=""         loading="lazy" decoding="async">
+  </section>
+
+  <!-- Секция: текст -->
+  <section class="text">
+    <img class="text__img" src="z5.png"  alt="Заголовок" loading="lazy" decoding="async">
+    <!-- <img class="text__img" src="txt.png" alt="Текст"     loading="lazy" decoding="async"> -->
+        <div class="txt">
+      <p class="txt__text">
+        Ваши улыбки и смех подарят нам незабываемое счастье в этот день,
+        а пожелания в конвертах помогут осуществить наши мечты.
+      </p>
+
+      <p class="txt__text">
+        Возьмите с собой отличное настроение! Приветствуются Ваши поздравления,
+        активное участие в интерактивах, творческие выступления.
+      </p>
+
+      <div class="txt__divider"></div>
+
+      <!-- <p class="txt__title">Без детей</p> -->
+      <p class="txt__note">
+        Мы очень любим Ваших малышей, но формат нашего торжества —
+        взрослый вечер. Пожалуйста, проведите этот день без них.
+      </p>
+
+      <div class="txt__divider"></div>
+
+      <p class="txt__text">
+        Просим Вас расслабиться и погрузиться в атмосферу праздника.
+        Все детали мероприятия уже продуманы, Ваша задача — наслаждаться.
+      </p>
+
+      <a class="txt__chat"
+         href="https://vk.me/join/2o/oad7h4ZO4Cv_hkXROyOvtFquiwFYVBM0="
+         target="_blank" rel="noopener noreferrer">
+        Перейти в чат
+      </a>
+    </div>
+  </section>
+
+  <!-- Секция: RSVP -->
+  <section class="rsvp">
+    <img class="rsvp__bg" src="fon1.png" alt="" loading="lazy" decoding="async">
+    <img class="rsvp__bg" src="rsvp.png" alt="Анкета гостя" loading="lazy" decoding="async">
+    <img class="rsvp__bg" src="txt2.png" alt="" loading="lazy" decoding="async">
+        <p class="rsvp__deadline">Ждем ответ до 30 ноября</p>
+
+    <form class="rsvp__form" id="rsvpForm" novalidate>
+      <label class="rsvp__label" for="guestName">Ваше имя и фамилия:</label>
+      <input class="rsvp__input" type="text" id="guestName" name="guestName"
+             placeholder="Введите имя и фамилию" autocomplete="name" required>
+
+      <span class="rsvp__label">Сможете ли Вы присутствовать на торжестве?</span>
+      <div class="rsvp__group">
+        <label class="rsvp__radio">
+          <input type="radio" name="attendance" value="yes" required>
+          <span class="rsvp__radio-mark"></span>
+          <span>Да, с удовольствием</span>
+        </label>
+        <label class="rsvp__radio">
+          <input type="radio" name="attendance" value="no">
+          <span class="rsvp__radio-mark"></span>
+          <span>К сожалению, не смогу присутствовать</span>
+        </label>
+      </div>
+
+      <span class="rsvp__label">Вы будете одни или с парой?</span>
+      <div class="rsvp__group">
+        <label class="rsvp__radio">
+          <input type="radio" name="plusOne" value="alone" required>
+          <span class="rsvp__radio-mark"></span>
+          <span>Буду один/одна</span>
+        </label>
+        <label class="rsvp__radio">
+          <input type="radio" name="plusOne" value="couple">
+          <span class="rsvp__radio-mark"></span>
+          <span>Буду с парой</span>
+        </label>
+      </div>
+
+            <span class="rsvp__label">Предпочтения по напиткам:</span>
+      <!-- <span class="rsvp__hint">Отметьте всё, что вам подходит</span> -->
+      <div class="rsvp__group">
+        <label class="rsvp__check">
+          <input type="checkbox" name="drinks" value="red-wine">
+          <span class="rsvp__check-mark"></span>
+          <span>Красное вино</span>
+        </label>
+        <label class="rsvp__check">
+          <input type="checkbox" name="drinks" value="white-wine">
+          <span class="rsvp__check-mark"></span>
+          <span>Белое вино</span>
+        </label>
+        <label class="rsvp__check">
+          <input type="checkbox" name="drinks" value="champagne">
+          <span class="rsvp__check-mark"></span>
+          <span>Шампанское</span>
+        </label>
+        <label class="rsvp__check">
+          <input type="checkbox" name="drinks" value="vodka">
+          <span class="rsvp__check-mark"></span>
+          <span>Водка</span>
+        </label>
+        <label class="rsvp__check">
+          <input type="checkbox" name="drinks" value="whiskey">
+          <span class="rsvp__check-mark"></span>
+          <span>Виски</span>
+        </label>
+        <label class="rsvp__check">
+          <input type="checkbox" name="drinks" value="soft">
+          <span class="rsvp__check-mark"></span>
+          <span>Безалкогольные напитки</span>
+        </label>
+      </div>
+
+      <label class="rsvp__label" for="partnerName">
+        Если Вы будете не одни, укажите имя и фамилию пары:
+      </label>
+      <input class="rsvp__input" type="text" id="partnerName" name="partnerName"
+             placeholder="Если будете одни — оставьте поле пусть" autocomplete="off">
+
+             
+
+      <button class="rsvp__submit" type="submit">Отправить</button>
+    </form>
+
+    <img class="rsvp__end" src="fon2.png" alt="" loading="lazy" decoding="async">
+  </section>
+
+  <!-- Секция: таймер -->
+  <section class="timer">
+    <img class="timer__img" src="z6.png" alt="Заголовок" loading="lazy" decoding="async">
+
+    <div class="timer__wrap" role="timer" aria-live="off">
+      <div class="timer__inner">
+        <div class="timer__unit">
+          <span class="timer__num" id="tDays">00</span>
+          <span class="timer__label">Дни</span>
+        </div>
+        <span class="timer__sep"></span>
+        <div class="timer__unit">
+          <span class="timer__num" id="tHours">00</span>
+          <span class="timer__label">Часы</span>
+        </div>
+        <span class="timer__sep"></span>
+        <div class="timer__unit">
+          <span class="timer__num" id="tMinutes">00</span>
+          <span class="timer__label">Минуты</span>
+        </div>
+        <span class="timer__sep"></span>
+        <div class="timer__unit">
+          <span class="timer__num" id="tSeconds">00</span>
+          <span class="timer__label">Секунды</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Секция: футер -->
+  <footer class="footer">
+    <img class="footer__img" src="footer.webp" alt="" loading="lazy" decoding="async">
+
+    <div class="footer__frame">
+      <img class="footer__photo" src="para.jpg" alt="" loading="lazy" decoding="async">
+    </div>
+  </footer>
+
+  <!-- Музыка -->
+  <audio id="musicAudio" src="1.mp3" loop preload="auto"></audio>
+
+  <script>
+    (function () {
+      /* ===== Музыка ===== */
+      const btn   = document.getElementById('musicBtn');
+      const audio = document.getElementById('musicAudio');
+
+      btn.addEventListener('click', function () {
+        if (audio.paused) {
+          audio.play().then(() => {
+            btn.classList.add('is-playing');
+            btn.setAttribute('aria-label', 'Выключить музыку');
+          }).catch(err => console.warn('Не удалось воспроизвести:', err));
+        } else {
+          audio.pause();
+          btn.classList.remove('is-playing');
+          btn.setAttribute('aria-label', 'Включить музыку');
+        }
+      });
+
+      /* ===== Форма RSVP (заготовка) ===== */
+      const form = document.getElementById('rsvpForm');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        console.log('Форма отправлена');
+      });
+
+      /* ===== Таймер до 27.03.2027 ===== */
+      const TARGET = new Date(2027, 2, 27, 0, 0, 0).getTime();
+
+      const $d = document.getElementById('tDays');
+      const $h = document.getElementById('tHours');
+      const $m = document.getElementById('tMinutes');
+      const $s = document.getElementById('tSeconds');
+
+      const pad = n => String(n).padStart(2, '0');
+
+      function tick() {
+        const diff = TARGET - Date.now();
+        if (diff <= 0) {
+          $d.textContent = $h.textContent = $m.textContent = $s.textContent = '00';
+          return;
+        }
+        const totalSec = Math.floor(diff / 1000);
+        $d.textContent = pad(Math.floor(totalSec / 86400));
+        $h.textContent = pad(Math.floor((totalSec % 86400) / 3600));
+        $m.textContent = pad(Math.floor((totalSec % 3600) / 60));
+        $s.textContent = pad(totalSec % 60);
+      }
+
+      tick();
+      setInterval(tick, 1000);
+    })();
+  </script>
+
+</body>
+</html>
